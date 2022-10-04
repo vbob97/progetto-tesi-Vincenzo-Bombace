@@ -1,0 +1,7 @@
+flask
+flask-restful
+nltk
+pandas
+numpy
+textblob
+kafka-python

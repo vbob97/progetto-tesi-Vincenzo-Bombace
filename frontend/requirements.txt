@@ -1,0 +1,7 @@
+flask
+textblob
+wtforms
+flask_wtf
+flask-restful
+requests
+folium

@@ -1,0 +1,106 @@
+version: "3"
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    restart: always
+    container_name: zookeepers
+    hostname: zookeeper
+    ports:
+      - 2181:2181
+    networks:
+      - mynet2
+    environment:
+      ZOO_MY_ID: 1
+  kafka:
+    container_name: broker
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    networks:
+      - mynet2
+    environment:
+     KAFKA_ADVERTISED_HOST_NAME: broker
+     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+     KAFKA_CREATE_TOPICS: "fromTwitter:1:1,tweetClean:1:1,tweetCleanStemmed:1:1,tweetTokerized:1:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  backend:
+    container_name: Data-receiver
+    build: backend/
+    depends_on:
+      - zookeeper
+      - kafka
+      - frontend
+    environment:
+        KAFKA_BROKER_URL: broker:9092
+        TOPIC_NAME: fromTwitter
+    ports:
+        - 2000:2000
+    links:
+        - "frontend"
+    depends_on:
+        - frontend
+    networks:
+            - mynet2
+  frontend:
+    container_name: Dashboard-frontend
+    build: frontend/
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+        - 5000:5000
+    networks:
+        - mynet2
+  cleaner:
+    container_name: cleaner
+    build: cleaner/
+    depends_on:
+      - zookeeper
+      - kafka
+      - backend
+    ports:
+        - 8000:8000    
+    environment:
+        KAFKA_BROKER_URL: broker:9092
+    networks:
+        - mynet2
+  visualizer:
+    container_name: visualizer
+    build: visualizer/
+    depends_on:
+      - zookeeper
+      - kafka
+      - cleaner
+    ports:
+        - 9000:9000
+    links:
+        - "cleaner"
+    networks:
+        - mynet2
+  # tokenizer:
+  #   container_name: tokenizer
+  #   build: tokenizer/
+  #   depends_on:
+  #     - zookeeper
+  #     - broker
+  #     - stemmer
+  #   environment:
+  #       KAFKA_BROKER_URL: broker:9092
+  #   networks:
+  #       - mynet2
+  # sentiment:
+  #   container_name: sentiment
+  #   build: sentiment/
+  #   depends_on:
+  #     - zookeeper
+  #     - broker
+  #     - tokenizer
+  #   environment:
+  #       KAFKA_BROKER_URL: broker:9092
+  #   networks:
+  #       - mynet2
+
+networks: 
+     mynet2:

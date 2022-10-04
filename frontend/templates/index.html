@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/invia.css') }}">
+</head>
+
+<body>
+    <form action=""method="POST">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <span class="logoname">Data Injector Settings</span>
+            </div>
+
+           
+
+        </div>
+
+        <div class="container-body">
+            <div class="sidebar">
+                <ul>
+                    <li class="dashboard">
+                        <i class="fa fa-dashcube"></i>
+                        <a href="{{url_for('index')}}">Data Filter</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="main-body">
+                <div class="headtittle">
+                    <span class="greeeting">  </span>
+                    <h2>Inserisci i dati con cui vuoi filtrare i tweet</h2>
+                </div>
+
+                <div class="cards">
+                    <div class="row row-1">
+                        <div class="col">
+                            <div class="balance-card">
+                                <h3 class="cardtittle">Inserisci hashtag</h3>
+                                    
+                                <h2 class="balance">{{form.hashtag(class_="custom_field")}} {{form.submit_tag(class="icon-btn")}}</h2>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="latest-activity">
+                                <h3 class="cardtittle">Hashta List:</h3>
+                                <ul><p>
+                                    {%for i in lista%}
+                                    <li>#{{i}}  <a href="{{url_for('cancella_lista',element=i)}}">cancella</a></li> 
+                                    {%endfor%}
+                                </ul>
+                            </p>
+                            </div>
+                        </div>
+
+                       
+                    </div>
+
+                    <div class="row row-2">
+                        <div class="col">
+                            <div class="total-invoice">
+                                <h3 class="cardtittle">Inserisci numeri di tweet</h3>
+                                <span class="t-i">{{form.iterazioni(class_="custom_field")}}</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="paid-invoice">
+                                <h3 class="cardtittle">Numero di tweet:</h3>
+                                <span class="p-i">{{n}}</span>
+                            </div>
+                        </div>
+                        <div class="bottone">
+                          
+                        <a href="{{url_for('invia_dati')}}" target="_blank">Avvia la ricerca</a>
+                  
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+
+</html>

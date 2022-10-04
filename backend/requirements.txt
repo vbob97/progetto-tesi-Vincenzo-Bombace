@@ -1,0 +1,9 @@
+flask
+requests
+geocoder
+kafka-python
+tweepy==3.7.0
+folium
+pandas
+textblob
+geopy

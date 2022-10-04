@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Data-recived</title>
+        <link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+    <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <span class="logoname">Data Recived from Consuemers:</span>
+                </div>
+            <br>
+            <div class="container-body">
+             </div>
+        <div class="main-body">
+            <h2>Tweet serializzati</h2>
+            {% for table in tables %}
+            {{ table|safe }}
+            {% endfor %}
+        </div>
+     </div>
+    </body>
+</html>
